@@ -24,7 +24,7 @@ namespace Storage
 
             services.AddDbContext<ApplicationContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
             services.AddSwaggerGen(c =>
