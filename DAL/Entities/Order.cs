@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DAL.Entities
 {
@@ -8,8 +9,8 @@ namespace DAL.Entities
         public Guid Id { get; set; }
         public DateTime Date { get; set; }
 
-        //public decimal Sum { get return ; set; }
-        //public int Count { get return; set; }
+        public decimal Sum { get { return Products.Select(x => x.Price).Sum(); } }
+        public int Count { get { return Products.Count; } }
 
         public List<Product> Products { get; set; }
         public List<OrderProducts> OrderProducts { get; set; }
