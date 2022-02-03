@@ -3,7 +3,7 @@ using System.Security.Claims;
 
 namespace BBL.Services.Interfaces
 {
-    interface IAuthenticateService
+    public interface IAuthenticateService
     {
         ClaimsIdentity Authenticate(UserDTO user);
     }

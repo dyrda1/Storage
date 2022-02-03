@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace BBL.Services.Interfaces
 {
-    interface ILoginService
+    public interface ILoginService
     {
         Task<ClaimsIdentity> Login(LoginModel model);
     }

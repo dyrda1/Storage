@@ -12,11 +12,13 @@ namespace BBL.Services.Classes
 {
     class RegisterService : IRegisterService
     {
+        private readonly IMapper _mapper;
         private readonly ApplicationContext _context;
         private readonly IAuthenticateService _authenticate;
 
-        public RegisterService(ApplicationContext context, IAuthenticateService authenticate)
+        public RegisterService(ApplicationContext context, IAuthenticateService authenticate, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
             _authenticate = authenticate;
         }
@@ -36,7 +38,7 @@ namespace BBL.Services.Classes
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            var userDTO = new MapperConfiguration(cfg => cfg.CreateMap<User, UserDTO>()).CreateMapper().Map<User, UserDTO>(user);
+            var userDTO = _mapper.Map<UserDTO>(user);
 
             return _authenticate.Authenticate(userDTO);
         }

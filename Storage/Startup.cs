@@ -1,3 +1,7 @@
+using AutoMapper;
+using BBL;
+using BBL.Services.Classes;
+using BBL.Services.Interfaces;
 using DAL;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -23,6 +27,11 @@ namespace Storage
         {
             services.AddControllers();
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Storage", Version = "v1" });
+            });
+
             services.AddDbContext<ApplicationContext>(options =>
             {
                 options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
@@ -31,13 +40,18 @@ namespace Storage
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
             {
                 options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
-                options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login"); //TODO: добавить префикс "/api"
+                options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login"); //TODO: добавить префикс "/api"?
             });
 
-            services.AddSwaggerGen(c =>
+            var mapperConfig = new MapperConfiguration(mc =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Storage", Version = "v1" });
+                mc.AddProfile(new MappingProfile());
             });
+            IMapper mapper = mapperConfig.CreateMapper();
+
+            services.AddSingleton(mapper);
+
+            services.AddSingleton<IAuthenticateService, AuthenticateService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

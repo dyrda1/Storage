@@ -12,20 +12,23 @@ namespace BBL.Services.Classes
 {
     class LoginService : ILoginService
     {
+        private readonly IMapper _mapper;
         private readonly ApplicationContext _context;
         private readonly IAuthenticateService _authenticate;
 
-        public LoginService(ApplicationContext context, IAuthenticateService authenticate)
+
+        public LoginService(ApplicationContext context, IAuthenticateService authenticate, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
             _authenticate = authenticate;
         }
 
         public async Task<ClaimsIdentity> Login(LoginModel model)
         {
-            var user = await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
+            User user = await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
 
-            var userDTO = new MapperConfiguration(cfg => cfg.CreateMap<User, UserDTO>()).CreateMapper().Map<User, UserDTO>(user);
+            var userDTO = _mapper.Map<UserDTO>(user);
 
             if (userDTO == null)
             {

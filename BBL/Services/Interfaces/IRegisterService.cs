@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace BBL.Services.Interfaces
 {
-    interface IRegisterService
+    public interface IRegisterService
     {
         Task<ClaimsIdentity> Register(RegisterModel model);
     }
