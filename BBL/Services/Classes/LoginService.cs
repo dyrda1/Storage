@@ -5,19 +5,15 @@ using BBL.Services.Interfaces;
 using DAL;
 using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BBL.Services.Classes
 {
     class LoginService : ILoginService
     {
-        private ApplicationContext _context;
-        private IAuthenticateService _authenticate;
+        private readonly ApplicationContext _context;
+        private readonly IAuthenticateService _authenticate;
 
         public LoginService(ApplicationContext context, IAuthenticateService authenticate)
         {
@@ -31,12 +27,12 @@ namespace BBL.Services.Classes
 
             var userDTO = new MapperConfiguration(cfg => cfg.CreateMap<User, UserDTO>()).CreateMapper().Map<User, UserDTO>(user);
 
-            if (userDTO != null)
+            if (userDTO == null)
             {
-                return _authenticate.Authenticate(userDTO);
+                return null;
             }
 
-            return null;
+            return _authenticate.Authenticate(userDTO);
         }
     }
 }
