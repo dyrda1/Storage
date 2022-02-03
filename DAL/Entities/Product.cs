@@ -13,7 +13,7 @@ namespace DAL.Entities
         public Guid? BrandId { get; set; }
         public virtual Brand Brand { get; set; }
 
-        public List<Order> Orders { get; set; }
-        public List<OrderProducts> OrderProducts { get; set; }
+        public virtual List<Order> Orders { get; set; }
+        public virtual List<OrderProducts> OrderProducts { get; set; }
     }
 }

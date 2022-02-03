@@ -6,9 +6,9 @@ namespace DAL.Entities
     public class OrderProducts
     {
         public Guid OrderId { get; set; }
-        public List<Order> Orders { get; set; }
+        public virtual List<Order> Orders { get; set; }
 
         public Guid ProductId { get; set; }
-        public List<Product> Products { get; set; }
+        public virtual List<Product> Products { get; set; }
     }
 }
