@@ -24,17 +24,17 @@ namespace BBL.BusinessModels
 
         public List<ProductDTO> GetProducts()
         {
-            var products = new List<ProductDTO>();
+            var productsDTO = new List<ProductDTO>();
 
             var orders = _context.Orders.Where(o => o.Date >= _dateFrom && o.Date <= _dateTo);
 
             foreach (var order in orders)
             {
-                var orderProducts = order.Products.Select(p => _mapper.Map<ProductDTO>(p));
-                products.AddRange(orderProducts);
+                var orderProductsDTO = order.Products.Select(p => _mapper.Map<ProductDTO>(p));
+                productsDTO.AddRange(orderProductsDTO);
             }
 
-            return products;
+            return productsDTO;
         }
 
         public int GetCount()
