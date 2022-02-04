@@ -40,7 +40,7 @@ namespace Storage
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
             {
                 options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
-                options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login"); //TODO: добавить префикс "/api"?
+                options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login"); //TODO: to add prefix "/api"?
             });
 
             var mapperConfig = new MapperConfiguration(mc =>
@@ -51,7 +51,8 @@ namespace Storage
 
             services.AddSingleton(mapper);
 
-            services.AddSingleton<IAuthenticateService, AuthenticateService>();
+            services.AddScoped<IAuthenticateService, AuthenticateService>();
+            services.AddTransient<IInitializeReportService, InitializeReportService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

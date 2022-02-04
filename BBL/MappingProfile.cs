@@ -1,27 +1,29 @@
 ﻿using AutoMapper;
 using BBL.DTO;
 using DAL.Entities;
+using System.Collections.Generic;
 
 namespace BBL
 {
-    public class MappingProfile : Profile
+    public class MappingProfile : Profile //TODO: hier or in folder?
     {
         public MappingProfile()
         {
-            CreateMap<User, UserDTO>();
-            CreateMap<UserDTO, User>();
+            CreateMap<UserDTO, User>().ReverseMap();
 
-            CreateMap<Role, RoleDTO>();
-            CreateMap<RoleDTO, Role>();
+            CreateMap<RoleDTO, Role>().ReverseMap();
 
-            CreateMap<Product, ProductDTO>();
-            CreateMap<ProductDTO, Product>();
+            CreateMap<ProductDTO, Product>().ReverseMap();
 
-            CreateMap<Order, OrderDTO>();
-            CreateMap<OrderDTO, Order>();
+            CreateMap<OrderDTO, Order>().ReverseMap();
 
-            CreateMap<Brand, BrandDTO>();
-            CreateMap<BrandDTO, Brand>();
+            CreateMap<BrandDTO, Brand>().ReverseMap();
+
+            CreateMap<ReportDTO, Report>().ReverseMap();
+
+            CreateMap<List<ProductDTO>, List<Product>>().ReverseMap();
+
+            CreateMap<List<ReportDTO>, List<Report>>().ReverseMap();
         }
     }
 }

@@ -15,5 +15,8 @@ namespace DAL.Entities
 
         public virtual List<Order> Orders { get; set; }
         public virtual List<OrderProducts> OrderProducts { get; set; }
+
+        public virtual List<Report> Report { get; set; }
+        public virtual List<ReportProducts> ReportProducts { get; set; }
     }
 }

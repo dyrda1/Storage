@@ -5,6 +5,6 @@ namespace BBL.Services.Interfaces
 {
     public interface IAuthenticateService
     {
-        ClaimsIdentity Authenticate(UserDTO user);
+        ClaimsIdentity Authenticate(UserDTO userDTO);
     }
 }
