@@ -37,6 +37,8 @@ namespace BBL.Services.Classes
             await Create(productDTO); //TODO: or update object with the same id?
         }
 
+        //TODO: method where employees can check in. Method or service or BusinessModel?
+
         public EmployerService(ApplicationContext context, IMapper mapper)
         {
             _mapper = mapper;

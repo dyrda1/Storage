@@ -16,6 +16,13 @@ namespace BBL.Services.Classes
         private readonly ApplicationContext _context;
         private readonly IInitializeReportService _initialize;
 
+        public ManagerService(ApplicationContext context, IMapper mapper, IInitializeReportService initialize)
+        {
+            _mapper = mapper;
+            _context = context;
+            _initialize = initialize;
+        }
+
         public async Task<ReportDTO> Create(DateTime dateFrom, DateTime dateTo)
         {
             var report = new Report();
@@ -33,13 +40,6 @@ namespace BBL.Services.Classes
             report = _context.Reports.Last();
 
             return _mapper.Map<ReportDTO>(report);
-        }
-
-        public ManagerService(ApplicationContext context, IMapper mapper, IInitializeReportService initialize)
-        {
-            _mapper = mapper;
-            _context = context;
-            _initialize = initialize;
         }
     }
 }

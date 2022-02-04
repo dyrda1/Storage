@@ -19,7 +19,11 @@ namespace BBL
 
             CreateMap<BrandDTO, Brand>().ReverseMap();
 
+            CreateMap<ReportDTO, Report>().ReverseMap();
+
             CreateMap<List<ProductDTO>, List<Product>>().ReverseMap();
+
+            CreateMap<List<ReportDTO>, List<Report>>().ReverseMap();
         }
     }
 }
