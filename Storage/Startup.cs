@@ -52,6 +52,7 @@ namespace Storage
             services.AddSingleton(mapper);
 
             services.AddScoped<IAuthenticateService, AuthenticateService>();
+            services.AddTransient<IInitializeReportService, InitializeReportService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

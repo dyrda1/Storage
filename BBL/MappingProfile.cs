@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BBL.DTO;
 using DAL.Entities;
+using System.Collections.Generic;
 
 namespace BBL
 {
@@ -17,6 +18,8 @@ namespace BBL
             CreateMap<OrderDTO, Order>().ReverseMap();
 
             CreateMap<BrandDTO, Brand>().ReverseMap();
+
+            CreateMap<List<ProductDTO>, List<Product>>().ReverseMap();
         }
     }
 }
