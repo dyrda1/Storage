@@ -33,11 +33,13 @@ namespace BBL.Services.Classes
 
         public async Task Update(ProductDTO productDTO)
         {
-            await Delete(productDTO);
-            await Create(productDTO); //TODO: or update object with the same id?
-        }
+            var product = _mapper.Map<Product>(productDTO);
 
-        //TODO: method where employees can check in. Method or service or BusinessModel?
+            _context.Products.Update(product);
+
+            await _context.SaveChangesAsync();
+        }
+    
 
         public EmployerService(ApplicationContext context, IMapper mapper)
         {

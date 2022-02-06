@@ -24,7 +24,7 @@ namespace BBL.Services.Classes
             return dateFrom.Date + " - " + dateTo.Date;
         }
 
-        public List<ProductDTO> GetProducts(DateTime dateFrom, DateTime dateTo) //TODO: repeat parameters?
+        public List<ProductDTO> GetProducts(DateTime dateFrom, DateTime dateTo)
         {
             var productsDTO = new List<ProductDTO>();
 

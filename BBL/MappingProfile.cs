@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace BBL
 {
-    public class MappingProfile : Profile //TODO: hier or in folder?
+    public class MappingProfile : Profile
     {
         public MappingProfile()
         {

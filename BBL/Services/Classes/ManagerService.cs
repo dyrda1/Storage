@@ -25,11 +25,12 @@ namespace BBL.Services.Classes
 
         public async Task<ReportDTO> Create(DateTime dateFrom, DateTime dateTo)
         {
-            var report = new Report();
-
-            report.Time = _initialize.GetTime(dateFrom, dateTo);
-            report.Sum = _initialize.GetSum(dateFrom, dateTo);
-            report.Amount = _initialize.GetAmount(dateFrom, dateTo);
+            var report = new Report
+            {
+                Time = _initialize.GetTime(dateFrom, dateTo),
+                Sum = _initialize.GetSum(dateFrom, dateTo),
+                Amount = _initialize.GetAmount(dateFrom, dateTo)
+            };
 
             var products = _initialize.GetProducts(dateFrom, dateTo);
             report.Products = _mapper.Map<List<Product>>(products);

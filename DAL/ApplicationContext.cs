@@ -12,6 +12,7 @@ namespace DAL
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Report> Reports { get; set; }
+        public DbSet<SkippedDays> SkippeddDays { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
@@ -23,6 +24,7 @@ namespace DAL
 
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new SkippedDaysConfiguration());
         }
     }
 
@@ -37,6 +39,10 @@ namespace DAL
             builder.HasMany(p => p.Orders)
                 .WithMany(o => o.Products)
                 .UsingEntity(j => j.ToTable("OrderProducts"));
+
+            builder.HasMany(p => p.Reports)
+                .WithMany(r => r.Products)
+                .UsingEntity(j => j.ToTable("ReportProducts"));
         }
     }
 
@@ -47,6 +53,16 @@ namespace DAL
             builder.HasOne(u => u.Role).
                 WithMany(r => r.Users).
                 HasForeignKey(u => u.RoleId);
+        }
+    }
+
+    public class SkippedDaysConfiguration : IEntityTypeConfiguration<SkippedDays>
+    {
+        public void Configure(EntityTypeBuilder<SkippedDays> builder)
+        {
+            builder.HasOne(d => d.User).
+                WithOne(u => u.SkippeddDays).
+                HasForeignKey<SkippedDays>(d=>d.UserId);
         }
     }
 }

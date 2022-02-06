@@ -1,5 +1,3 @@
-using AutoMapper;
-using BBL;
 using BBL.Services.Classes;
 using BBL.Services.Interfaces;
 using DAL;
@@ -39,17 +37,11 @@ namespace Storage
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
             {
-                options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
-                options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login"); //TODO: to add prefix "/api"?
+                options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/api/Account/Login");
+                options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/api/Account/Login");
             });
 
-            var mapperConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new MappingProfile());
-            });
-            IMapper mapper = mapperConfig.CreateMapper();
-
-            services.AddSingleton(mapper);
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddScoped<IAuthenticateService, AuthenticateService>();
             services.AddTransient<IInitializeReportService, InitializeReportService>();

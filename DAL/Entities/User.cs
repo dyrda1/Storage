@@ -10,5 +10,7 @@ namespace DAL.Entities
 
         public Guid RoleId { get; set; }
         public virtual Role Role { get; set; }
+
+        public virtual SkippedDays SkippeddDays { get; set; }
     }
 }
