@@ -1,14 +1,16 @@
-﻿using BBL.DTO;
+﻿using BBL.BusinessModels;
+using BBL.DTO;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BBL.Services.Interfaces
 {
     public interface IEmployerService
     {
-        Task Create(ProductDTO productDTO);
+        Task<Response<List<CreateProductDTO>>> Create(ProductDTO productDTO);
 
-        Task Delete(ProductDTO productDTO);
+        Task<Response<List<ProductDTO>>> Delete(ProductDTO productDTO);
 
-        Task Update(ProductDTO productDTO);
+        Task<Response<List<ProductDTO>>> Update(ProductDTO productDTO);
     }
 }

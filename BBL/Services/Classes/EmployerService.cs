@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using BBL.BusinessModels;
 using BBL.DTO;
 using BBL.Services.Interfaces;
 using DAL;
 using DAL.Entities;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,31 +15,52 @@ namespace BBL.Services.Classes
         private readonly IMapper _mapper;
         private readonly ApplicationContext _context;
 
-        public async Task Create(ProductDTO productDTO)
+        public async Task<Response<List<CreateProductDTO>>> Create(CreateProductDTO productDTO)
         {
             var product = _mapper.Map<Product>(productDTO);
 
             await _context.Products.AddAsync(product);
-
             await _context.SaveChangesAsync();
+
+            var response = new Response<List<CreateProductDTO>>()
+            {
+                Data = _mapper.Map<List<CreateProductDTO>>(_context.Products.ToList()),
+            };
+
+            return response;
         }
 
-        public async Task Delete(ProductDTO productDTO)
+        public async Task<Response<List<ProductDTO>>> Delete(ProductDTO productDTO)
         {
+            var response = new Response<List<ProductDTO>>();
+
             var product = _context.Products.Where(x => x.Id == productDTO.Id).SingleOrDefault();
 
             _context.Products.Remove(product);
-
             await _context.SaveChangesAsync();
+
+            if (product == null)
+            {
+                response.Message = "This product does not exist";
+            }
+            response.Data = _mapper.Map<List<ProductDTO>>(_context.Products.ToList());
+
+            return response;
         }
 
-        public async Task Update(ProductDTO productDTO)
+        public async Task<Response<List<ProductDTO>>> Update(ProductDTO productDTO)
         {
             var product = _mapper.Map<Product>(productDTO);
 
             _context.Products.Update(product);
-
             await _context.SaveChangesAsync();
+
+            var response = new Response<List<ProductDTO>>()
+            {
+                Data = _mapper.Map<List<ProductDTO>>(_context.Products.ToList()),
+            };
+
+            return response;
         }
     
 

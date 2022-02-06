@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BBL.BusinessModels;
 using BBL.DTO;
 using BBL.Services.Interfaces;
 using DAL;
@@ -23,8 +24,10 @@ namespace BBL.Services.Classes
             _initialize = initialize;
         }
 
-        public async Task<ReportDTO> Create(DateTime dateFrom, DateTime dateTo)
+        public async Task<Response<ReportDTO>> Create(DateTime dateFrom, DateTime dateTo)
         {
+            var response = new Response<ReportDTO>();
+
             var report = new Report
             {
                 Time = _initialize.GetTime(dateFrom, dateTo),
@@ -32,15 +35,26 @@ namespace BBL.Services.Classes
                 Amount = _initialize.GetAmount(dateFrom, dateTo)
             };
 
-            var products = _initialize.GetProducts(dateFrom, dateTo);
+            List<ProductDTO> products;
+            try
+            {
+                products = _initialize.GetProducts(dateFrom, dateTo);
+            }
+            catch (Exception)
+            {
+                response.Message = "No products have been sold during this time";
+                response.Success = false;
+
+                return response;
+            }
             report.Products = _mapper.Map<List<Product>>(products);
 
             await _context.Reports.AddAsync(report);
             await _context.SaveChangesAsync();
 
-            report = _context.Reports.Last();
+            response.Data = _mapper.Map<ReportDTO>(_context.Reports.Last());
 
-            return _mapper.Map<ReportDTO>(report);
+            return response;
         }
     }
 }

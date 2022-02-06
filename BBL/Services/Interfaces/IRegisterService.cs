@@ -1,4 +1,5 @@
 ﻿using BBL.AuthorizationModels;
+using BBL.BusinessModels;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -6,6 +7,6 @@ namespace BBL.Services.Interfaces
 {
     public interface IRegisterService
     {
-        Task<ClaimsIdentity> Register(RegisterModel model);
+        Task<Response<ClaimsIdentity>> Register(RegisterModel model);
     }
 }

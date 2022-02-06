@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BBL.BusinessModels;
 using BBL.DTO;
 using BBL.Services.Interfaces;
 using DAL;
@@ -18,10 +19,14 @@ namespace BBL.Services.Classes
             _context = context;
         }
 
-        public List<ReportDTO> GetReports()
+        public Response<List<ReportDTO>> GetReports()
         {
-            var reports = _context.Reports.ToList();
-            return _mapper.Map<List<ReportDTO>>(reports);
+            var response = new Response<List<ReportDTO>>()
+            {
+                Data = _mapper.Map<List<ReportDTO>>(_context.Products.ToList())
+            };
+
+            return response;
         }
 
         //TODO: method to see employees' passes

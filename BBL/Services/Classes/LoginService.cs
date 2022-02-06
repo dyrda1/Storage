@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BBL.AuthorizationModels;
+using BBL.BusinessModels;
 using BBL.DTO;
 using BBL.Services.Interfaces;
 using DAL;
@@ -24,18 +25,23 @@ namespace BBL.Services.Classes
             _authenticate = authenticate;
         }
 
-        public async Task<ClaimsIdentity> Login(LoginModel model)
+        public async Task<Response<ClaimsIdentity>> Login(LoginModel model)
         {
-            User user = await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
+            var response = new Response<ClaimsIdentity>();
 
-            var userDTO = _mapper.Map<UserDTO>(user);
-
-            if (userDTO == null)
+            User user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
+            
+            if (user == null)
             {
-                return null;
+                response.Message = "User with this password and email does not exist";
+                response.Success = false;
+
+                return response;
             }
 
-            return _authenticate.Authenticate(userDTO);
+            response.Data = _authenticate.Authenticate(_mapper.Map<UserDTO>(user));
+
+            return response;
         }
     }
 }

@@ -6,7 +6,6 @@ namespace DAL
 {
     public class ApplicationContext : DbContext
     {
-        public DbSet<Brand> Brands { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<User> Users { get; set; }
@@ -32,10 +31,6 @@ namespace DAL
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
-            builder.HasOne(p => p.Brand).
-                WithMany(b => b.Products).
-                HasForeignKey(p => p.BrandId);
-
             builder.HasMany(p => p.Orders)
                 .WithMany(o => o.Products)
                 .UsingEntity(j => j.ToTable("OrderProducts"));
