@@ -15,6 +15,12 @@ namespace BBL.Services.Classes
         private readonly IMapper _mapper;
         private readonly ApplicationContext _context;
 
+        public EmployerService(ApplicationContext context, IMapper mapper)
+        {
+            _mapper = mapper;
+            _context = context;
+        }
+
         public async Task<Response<List<CreateProductDTO>>> Create(CreateProductDTO productDTO)
         {
             var product = _mapper.Map<Product>(productDTO);
@@ -61,13 +67,6 @@ namespace BBL.Services.Classes
             };
 
             return response;
-        }
-    
-
-        public EmployerService(ApplicationContext context, IMapper mapper)
-        {
-            _mapper = mapper;
-            _context = context;
         }
     }
 }

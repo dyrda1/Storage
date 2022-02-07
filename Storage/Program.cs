@@ -1,5 +1,7 @@
+using BBL.Ultils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using System.Threading.Tasks;
 
 namespace Storage
 {
@@ -7,6 +9,7 @@ namespace Storage
     {
         public static void Main(string[] args)
         {
+            MarkScheduler.Start();
             CreateHostBuilder(args).Build().Run();
         }
 
