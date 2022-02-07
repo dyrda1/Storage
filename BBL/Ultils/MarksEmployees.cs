@@ -17,11 +17,17 @@ namespace BBL.Ultils
 
         public async Task Execute(IJobExecutionContext context)
         {
-            if (!(DateTime.Now.DayOfWeek == DayOfWeek.Saturday&& DateTime.Now.DayOfWeek == DayOfWeek.Saturday)) 
+            if (!(DateTime.Now.DayOfWeek == DayOfWeek.Saturday && DateTime.Now.DayOfWeek == DayOfWeek.Saturday))
             {
                 var absents = _context.SkippeddDays.Where(x => x.MarkedToday == true).ToList();
 
                 absents.ForEach(x => x.Amount++);
+
+                foreach (var skippedDays in _context.SkippeddDays)
+                {
+                    skippedDays.MarkedToday = false;
+                }
+
                 await _context.SaveChangesAsync();
             }
         }
