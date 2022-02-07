@@ -45,6 +45,7 @@ namespace Storage
 
             services.AddScoped<IAuthenticateService, AuthenticateService>();
             services.AddTransient<IInitializeReportService, InitializeReportService>();
+            services.AddScoped<IEmployerService, EmployerService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
