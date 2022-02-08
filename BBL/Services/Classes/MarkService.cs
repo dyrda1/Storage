@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BBL.Services.Classes
 {
-    class MarkService : IMarkService
+    public class MarkService : IMarkService
     {
         private readonly ApplicationContext _context;
         private readonly IMapper _mapper;

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BBL.Services.Classes
 {
-    class LoginService : ILoginService
+    public class LoginService : ILoginService
     {
         private readonly IMapper _mapper;
         private readonly ApplicationContext _context;

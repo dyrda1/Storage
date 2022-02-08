@@ -1,3 +1,4 @@
+using BBL;
 using BBL.Services.Classes;
 using BBL.Services.Interfaces;
 using DAL;
@@ -41,11 +42,16 @@ namespace Storage
                 options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/api/Account/Login");
             });
 
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(typeof(ApplicationContext), typeof(MappingProfile)); //TODO: right?
 
             services.AddScoped<IAuthenticateService, AuthenticateService>();
             services.AddTransient<IInitializeReportService, InitializeReportService>();
             services.AddScoped<IEmployerService, EmployerService>();
+            services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<IManagerService, ManagerService>();
+            services.AddScoped<IMarkService, MarkService>();
+            services.AddScoped<IRegisterService, RegisterService>();
+            services.AddScoped<ILoginService, LoginService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BBL.Services.Classes
 {
-    class AdminService : IAdminService
+    public class AdminService : IAdminService
     {
         private readonly IMapper _mapper;
         private readonly ApplicationContext _context;
@@ -47,7 +47,7 @@ namespace BBL.Services.Classes
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
 
-            response.Data = _mapper.Map<List<UserDTO>>(_context.Users);
+            response.Data = _mapper.Map<List<UserDTO>>(_context.Users.ToList());
 
             return response;
         }
@@ -56,7 +56,7 @@ namespace BBL.Services.Classes
         {
             var response = new Response<List<SkippedDaysDTO>>()
             {
-                Data = _mapper.Map<List<SkippedDaysDTO>>(_context.SkippeddDays)
+                Data = _mapper.Map<List<SkippedDaysDTO>>(_context.SkippeddDays.ToList())
             };
 
             return response;
@@ -66,7 +66,7 @@ namespace BBL.Services.Classes
         {
             var response = new Response<List<ReportDTO>>()
             {
-                Data = _mapper.Map<List<ReportDTO>>(_context.Products.ToList())
+                Data = _mapper.Map<List<ReportDTO>>(_context.Reports.ToList())
             };
 
             return response;

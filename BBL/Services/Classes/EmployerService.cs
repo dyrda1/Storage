@@ -58,7 +58,7 @@ namespace BBL.Services.Classes
         {
             var product = _mapper.Map<Product>(productDTO);
 
-            _context.Products.Update(product);
+            //_context.Products.Update(product);
             await _context.SaveChangesAsync();
 
             var response = new Response<List<ProductDTO>>()

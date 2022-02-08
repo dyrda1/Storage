@@ -28,7 +28,7 @@ namespace BBL.Services.Classes
         {
             var productsDTO = new List<ProductDTO>();
 
-            var orders = _context.Orders.Where(o => o.Date >= dateFrom && o.Date <= dateTo);
+            var orders = _context.Orders.Where(o => o.Date >= dateFrom && o.Date <= dateTo).ToList();
 
             foreach (var order in orders)
             {

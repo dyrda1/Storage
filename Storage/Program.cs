@@ -9,7 +9,7 @@ namespace Storage
     {
         public static void Main(string[] args)
         {
-            MarkScheduler.Start(); //TODO: hier?
+            MarkScheduler.Start();
             CreateHostBuilder(args).Build().Run();
         }
 

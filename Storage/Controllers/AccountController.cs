@@ -2,14 +2,12 @@
 using BBL.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Storage.Controllers
 {
-    [Authorize(Roles = "admin")]
     [ApiController]
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
@@ -25,24 +23,28 @@ namespace Storage.Controllers
 
         [HttpPost]
         [Route("Register")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterModel model)
         {
             var response = await _registerService.Register(model);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(response.Data));
+            if (response.Data != null)
+            {
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(response.Data));
+            }
 
-            return Content("f");
+            return Content(response.Message);
         }
 
         [HttpPost]
         [Route("Login")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginModel model)
         {
             var response = await _loginService.Login(model);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(response.Data));
+            if (response.Data != null)
+            {
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(response.Data));
+            }
 
-            return Content("f");
+            return Content(response.Message);
         }
     }
 }

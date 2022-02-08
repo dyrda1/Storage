@@ -41,6 +41,7 @@ namespace Storage.Controllers
         }
 
         [HttpPut]
+        [Route("Mark")]
         public async Task<ActionResult<Response<SkippedDaysDTO>>> Put(UserDTO userDTO)
         {
             return await _markService.Mark(userDTO);

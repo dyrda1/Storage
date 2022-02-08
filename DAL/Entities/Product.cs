@@ -11,9 +11,7 @@ namespace DAL.Entities
         public DateTime CreateDate { get; set; }
 
         public virtual List<Order> Orders { get; set; }
-        public virtual List<OrderProducts> OrderProducts { get; set; }
 
         public virtual List<Report> Reports { get; set; }
-        public virtual List<ReportProducts> ReportProducts { get; set; }
     }
 }

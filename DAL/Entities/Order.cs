@@ -9,6 +9,5 @@ namespace DAL.Entities
         public DateTime Date { get; set; }
 
         public virtual List<Product> Products { get; set; }
-        public virtual List<OrderProducts> OrderProducts { get; set; }
     }
 }

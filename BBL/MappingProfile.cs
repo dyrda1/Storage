@@ -25,6 +25,8 @@ namespace BBL
 
             CreateMap<List<ProductDTO>, List<Product>>().ReverseMap();
 
+            CreateMap<List<SkippedDaysDTO>, List<SkippedDays>>().ReverseMap();
+
             CreateMap<List<ReportDTO>, List<Report>>().ReverseMap();
 
             CreateMap<List<UserDTO>, List<User>>().ReverseMap();

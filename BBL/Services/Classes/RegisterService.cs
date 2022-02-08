@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BBL.Services.Classes
 {
-    class RegisterService : IRegisterService
+    public class RegisterService : IRegisterService
     {
         private readonly IMapper _mapper;
         private readonly ApplicationContext _context;
@@ -39,7 +39,7 @@ namespace BBL.Services.Classes
             }
 
             user = new User { Email = model.Email, Password = model.Password };
-            user.Role = await _context.Roles.FirstAsync(r => r.Name == "user");
+            user.Role = await _context.Roles.FirstAsync(r => r.Name == "employer");
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
