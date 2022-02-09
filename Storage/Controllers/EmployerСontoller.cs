@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Storage.Controllers
 {
-    [Authorize(Roles = "employer")]
+    //[Authorize(Roles = "employer")]
     [ApiController]
     [Route("api/[controller]")]
     public class EmployerСontoller : ControllerBase
@@ -29,9 +29,9 @@ namespace Storage.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult<Response<List<ProductDTO>>>> Delete(ProductDTO productDTO)
+        public async Task<ActionResult<Response<List<ProductDTO>>>> Delete(string name)
         {
-            return await _employerService.Delete(productDTO);
+            return await _employerService.DeleteByName(name);
         }
 
         [HttpPut]

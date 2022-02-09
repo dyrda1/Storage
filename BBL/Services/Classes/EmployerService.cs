@@ -36,11 +36,11 @@ namespace BBL.Services.Classes
             return response;
         }
 
-        public async Task<Response<List<ProductDTO>>> Delete(ProductDTO productDTO)
+        public async Task<Response<List<ProductDTO>>> DeleteByName(string name)
         {
             var response = new Response<List<ProductDTO>>();
 
-            var product = _context.Products.Where(x => x.Id == productDTO.Id).SingleOrDefault();
+            var product = _context.Products.Where(x => x.Name == name).SingleOrDefault();
 
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
@@ -58,7 +58,7 @@ namespace BBL.Services.Classes
         {
             var product = _mapper.Map<Product>(productDTO);
 
-            //_context.Products.Update(product);
+            _context.Products.Update(product);
             await _context.SaveChangesAsync();
 
             var response = new Response<List<ProductDTO>>()

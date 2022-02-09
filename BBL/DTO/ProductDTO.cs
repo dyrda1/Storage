@@ -9,7 +9,5 @@ namespace BBL.DTO
         public string Name { get; set; }
         public decimal Price { get; set; }
         public DateTime CreateDate { get; set; }
-        public List<OrderDTO> Orders { get; set; }
-        public List<ReportDTO> Reports { get; set; }
     }
 }

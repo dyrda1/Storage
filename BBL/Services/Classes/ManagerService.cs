@@ -52,7 +52,7 @@ namespace BBL.Services.Classes
             await _context.Reports.AddAsync(report);
             await _context.SaveChangesAsync();
 
-            response.Data = _mapper.Map<ReportDTO>(_context.Reports.Last());
+            response.Data = _mapper.Map<ReportDTO>(_context.Reports.ToList().Last());
 
             return response;
         }

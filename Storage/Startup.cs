@@ -36,13 +36,13 @@ namespace Storage
                 options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
-            {
-                options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/api/Account/Login");
-                options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/api/Account/Login");
-            });
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            //{
+            //    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/api/Account/Login");
+            //    options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/api/Account/Login");
+            //});
 
-            services.AddAutoMapper(typeof(ApplicationContext), typeof(MappingProfile)); //TODO: right?
+            services.AddAutoMapper(typeof(ApplicationContext), typeof(MappingProfile));
 
             services.AddScoped<IAuthenticateService, AuthenticateService>();
             services.AddTransient<IInitializeReportService, InitializeReportService>();

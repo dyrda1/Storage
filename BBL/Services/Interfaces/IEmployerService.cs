@@ -9,7 +9,7 @@ namespace BBL.Services.Interfaces
     {
         Task<Response<List<CreateProductDTO>>> Create(CreateProductDTO createProductDTO);
 
-        Task<Response<List<ProductDTO>>> Delete(ProductDTO productDTO);
+        Task<Response<List<ProductDTO>>> DeleteByName(string name);
 
         Task<Response<List<ProductDTO>>> Update(ProductDTO productDTO);
     }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Storage.Controllers
 {
-    [Authorize(Roles = "admin")]
+    //[Authorize(Roles = "admin")]
     [ApiController]
     [Route("api/[controller]")]
     public class AdminСontoller
