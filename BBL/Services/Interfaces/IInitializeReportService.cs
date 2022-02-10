@@ -1,6 +1,7 @@
 ﻿using BBL.DTO;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BBL.Services.Interfaces
 {
@@ -8,10 +9,10 @@ namespace BBL.Services.Interfaces
     {
         string GetTime(DateTime dateFrom, DateTime dateTo);
 
-        List<ProductDTO> GetProducts(DateTime dateFrom, DateTime dateTo);
+        Task<List<ProductDTO>> GetProducts(DateTime dateFrom, DateTime dateTo);
 
-        int GetAmount(DateTime dateFrom, DateTime dateTo);
+        Task<int> GetAmount(DateTime dateFrom, DateTime dateTo);
 
-        decimal GetSum(DateTime dateFrom, DateTime dateTo);    
+        Task<decimal> GetSum(DateTime dateFrom, DateTime dateTo);    
     }
 }

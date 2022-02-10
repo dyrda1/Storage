@@ -38,7 +38,7 @@ namespace BBL.Services.Classes
 
             if (mark == null)
             {
-                mark = new SkippedDays() { UserId = user.Id, MarkedToday = true }; // TODO: does not count if someone does not charge on the first day
+                mark = new SkippedDays() { UserId = user.Id, MarkedToday = true };
                 await _context.SkippeddDays.AddAsync(mark);
             }
 

@@ -2,9 +2,12 @@
 using BBL.DTO;
 using BBL.Services.Interfaces;
 using DAL;
+using DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BBL.Services.Classes
 {
@@ -24,29 +27,30 @@ namespace BBL.Services.Classes
             return dateFrom.Date + " - " + dateTo.Date;
         }
 
-        public List<ProductDTO> GetProducts(DateTime dateFrom, DateTime dateTo)
+        public async Task<List<ProductDTO>> GetProducts(DateTime dateFrom, DateTime dateTo)
         {
             var productsDTO = new List<ProductDTO>();
 
-            var orders = _context.Orders.Where(o => o.Date >= dateFrom && o.Date <= dateTo).ToList();
+            var orders = await _context.Orders.Where(o => o.Date >= dateFrom && o.Date <= dateTo).ToListAsync();
 
             foreach (var order in orders)
             {
-                var orderProductsDTO = _mapper.Map<List<ProductDTO>>(order.Products);
-                productsDTO.AddRange(orderProductsDTO);
+                productsDTO.AddRange(_mapper.Map<List<ProductDTO>>(order.Products));
             }
 
             return productsDTO;
         }
 
-        public int GetAmount(DateTime dateFrom, DateTime dateTo)
+        public async Task<int> GetAmount(DateTime dateFrom, DateTime dateTo)
         {
-            return GetProducts(dateFrom, dateTo).Count;
+            var products = await GetProducts(dateFrom, dateTo);
+            return products.Count;
         }
 
-        public decimal GetSum(DateTime dateFrom, DateTime dateTo)
+        public async Task<decimal> GetSum(DateTime dateFrom, DateTime dateTo)
         {
-            return GetProducts(dateFrom, dateTo).Select(x => x.Price).Sum();
+            var products = await GetProducts(dateFrom, dateTo);
+            return products.Select(x => x.Price).Sum();
         }
     }
 }

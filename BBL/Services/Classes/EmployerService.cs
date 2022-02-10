@@ -4,6 +4,7 @@ using BBL.DTO;
 using BBL.Services.Interfaces;
 using DAL;
 using DAL.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -59,6 +60,7 @@ namespace BBL.Services.Classes
                 return response;
             }
 
+            await _context.Orders.AddAsync(new Order() { Date = DateTime.Now, Products = new List<Product>() { product } });
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
 

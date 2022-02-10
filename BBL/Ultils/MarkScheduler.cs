@@ -17,7 +17,7 @@ namespace BBL.Ultils
             IJobDetail jobDetail = JobBuilder.Create<MarksEmployees>().Build();
             ITrigger trigger = TriggerBuilder.Create()
                 .WithIdentity("MailingTrigger", "default")
-                .StartAt(Convert.ToDateTime("18:00"))
+                .StartAt(new DateTimeOffset(Convert.ToDateTime("18:00")))
                 .WithCalendarIntervalSchedule(x => x
                     .SkipDayIfHourDoesNotExist(true)
                     .WithIntervalInDays(1))

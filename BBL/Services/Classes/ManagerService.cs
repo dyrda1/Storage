@@ -28,14 +28,7 @@ namespace BBL.Services.Classes
         {
             var response = new Response<ReportDTO>();
 
-            var report = new Report
-            {
-                Time = _initialize.GetTime(dateFrom, dateTo),
-                Sum = _initialize.GetSum(dateFrom, dateTo),
-                Amount = _initialize.GetAmount(dateFrom, dateTo)
-            };
-
-            List<ProductDTO> products = _initialize.GetProducts(dateFrom, dateTo);
+            List<ProductDTO> products = await _initialize.GetProducts(dateFrom, dateTo);
 
             if (products.Count == 0)
             {
@@ -44,13 +37,18 @@ namespace BBL.Services.Classes
 
                 return response;
             }
-
-            response.Data = _mapper.Map<ReportDTO>(report);
-            report.Products = _mapper.Map<List<Product>>(products);
-
+            var report = new Report
+            {
+                Time = _initialize.GetTime(dateFrom, dateTo),
+                Sum = await _initialize.GetSum(dateFrom, dateTo),
+                Amount = await _initialize.GetAmount(dateFrom, dateTo),
+            };
+                        
             await _context.Reports.AddAsync(report);
             await _context.SaveChangesAsync();
-                        
+
+            response.Data = _mapper.Map<ReportDTO>(_context.Reports.OrderBy(x=>x).Last());
+
             return response;
         }
     }
