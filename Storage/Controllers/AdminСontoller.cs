@@ -35,9 +35,9 @@ namespace Storage.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult<Response<List<UserDTO>>>> Delete(UserDTO userDTO)
+        public async Task<ActionResult<Response<List<UserDTO>>>> Delete(string email)
         {
-            return await _adminService.DeleteUser(userDTO);
+            return await _adminService.DeleteUser(email);
         }
     }
 }

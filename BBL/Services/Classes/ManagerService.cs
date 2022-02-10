@@ -35,25 +35,22 @@ namespace BBL.Services.Classes
                 Amount = _initialize.GetAmount(dateFrom, dateTo)
             };
 
-            List<ProductDTO> products;
-            try
-            {
-                products = _initialize.GetProducts(dateFrom, dateTo);
-            }
-            catch (Exception)
+            List<ProductDTO> products = _initialize.GetProducts(dateFrom, dateTo);
+
+            if (products.Count == 0)
             {
                 response.Message = "No products have been sold during this time";
                 response.Success = false;
 
                 return response;
             }
+
+            response.Data = _mapper.Map<ReportDTO>(report);
             report.Products = _mapper.Map<List<Product>>(products);
 
             await _context.Reports.AddAsync(report);
             await _context.SaveChangesAsync();
-
-            response.Data = _mapper.Map<ReportDTO>(_context.Reports.ToList().Last());
-
+                        
             return response;
         }
     }

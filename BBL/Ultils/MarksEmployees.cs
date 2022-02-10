@@ -1,4 +1,5 @@
 ﻿using DAL;
+using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 using System;
 using System.Linq;
@@ -8,27 +9,27 @@ namespace BBL.Ultils
 {
     public class MarksEmployees : IJob
     {
-        private readonly ApplicationContext _context;
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
-        public MarksEmployees(ApplicationContext context)
+        public MarksEmployees(IServiceScopeFactory serviceScopeFactory)
         {
-            _context = context;
+            this.serviceScopeFactory = serviceScopeFactory;
         }
 
         public async Task Execute(IJobExecutionContext context)
         {
             if (!(DateTime.Now.DayOfWeek == DayOfWeek.Saturday && DateTime.Now.DayOfWeek == DayOfWeek.Saturday))
             {
-                var absents = _context.SkippeddDays.Where(x => x.MarkedToday == true).ToList();
-
-                absents.ForEach(x => x.Amount++);
-
-                foreach (var skippedDays in _context.SkippeddDays)
+                using (var scope = serviceScopeFactory.CreateScope())
                 {
-                    skippedDays.MarkedToday = false;
-                }
+                    var _context = scope.ServiceProvider.GetService<ApplicationContext>();
 
-                await _context.SaveChangesAsync();
+                    var absents = _context.SkippeddDays.Where(x => x.MarkedToday == false).ToList();
+                    absents.ForEach(x => ++x.Amount);
+                    _context.SkippeddDays.ToList().ForEach(x => x.MarkedToday = false);
+
+                    await _context.SaveChangesAsync();
+                }
             }
         }
     }

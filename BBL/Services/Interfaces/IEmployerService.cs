@@ -7,7 +7,7 @@ namespace BBL.Services.Interfaces
 {
     public interface IEmployerService
     {
-        Task<Response<List<CreateProductDTO>>> Create(CreateProductDTO createProductDTO);
+        Task<Response<List<ProductDTO>>> Create(CreateProductDTO createProductDTO);
 
         Task<Response<List<ProductDTO>>> DeleteByName(string name);
 

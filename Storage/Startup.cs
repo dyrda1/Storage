@@ -1,8 +1,9 @@
 using BBL;
 using BBL.Services.Classes;
 using BBL.Services.Interfaces;
+using BBL.Ultils;
+using BLL.Ultils;
 using DAL;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -42,16 +43,18 @@ namespace Storage
             //    options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/api/Account/Login");
             //});
 
-            services.AddAutoMapper(typeof(ApplicationContext), typeof(MappingProfile));
+            services.AddAutoMapper(typeof(ApplicationContext), typeof(MappingProfile)); 
 
-            services.AddScoped<IAuthenticateService, AuthenticateService>();
+            //services.AddScoped<IAuthenticateService, AuthenticateService>();
             services.AddTransient<IInitializeReportService, InitializeReportService>();
-            services.AddScoped<IEmployerService, EmployerService>();
-            services.AddScoped<IAdminService, AdminService>();
-            services.AddScoped<IManagerService, ManagerService>();
-            services.AddScoped<IMarkService, MarkService>();
-            services.AddScoped<IRegisterService, RegisterService>();
-            services.AddScoped<ILoginService, LoginService>();
+            services.AddTransient<IEmployerService, EmployerService>();
+            services.AddTransient<IAdminService, AdminService>();
+            services.AddTransient<IManagerService, ManagerService>();
+            services.AddTransient<IMarkService, MarkService>();
+            services.AddTransient<JobFactory>();
+            services.AddScoped<MarksEmployees>();
+            //services.AddScoped<IRegisterService, RegisterService>();
+            //services.AddScoped<ILoginService, LoginService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -67,9 +70,9 @@ namespace Storage
 
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseAuthentication();
-
+            app.UseAuthorization();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

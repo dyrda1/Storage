@@ -11,6 +11,6 @@ namespace BBL.Services.Interfaces
 
         Response<List<SkippedDaysDTO>> GetUsersSkippedDays();
 
-        Task<Response<List<UserDTO>>> DeleteUser(UserDTO userDTO);
+        Task<Response<List<UserDTO>>> DeleteUser(string email);
     }
 }

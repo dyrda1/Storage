@@ -1,4 +1,6 @@
-﻿using Quartz;
+﻿using BLL.Ultils;
+using Microsoft.Extensions.DependencyInjection;
+using Quartz;
 using Quartz.Impl;
 using System;
 
@@ -6,24 +8,22 @@ namespace BBL.Ultils
 {
     public class MarkScheduler
     {
-        public static async void Start()
+        public static async void Start(IServiceProvider serviceProvider)
         {
-            var time = Convert.ToDateTime("18:00");
-
             IScheduler scheduler = await StdSchedulerFactory.GetDefaultScheduler();
+            scheduler.JobFactory = serviceProvider.GetService<JobFactory>();
             await scheduler.Start();
 
-            IJobDetail job = JobBuilder.Create<MarksEmployees>().Build();
-
+            IJobDetail jobDetail = JobBuilder.Create<MarksEmployees>().Build();
             ITrigger trigger = TriggerBuilder.Create()
-                .WithIdentity("trigger1", "group1")     
-                .StartAt(time)
-                .WithCalendarIntervalSchedule(x=>x
+                .WithIdentity("MailingTrigger", "default")
+                .StartAt(Convert.ToDateTime("18:00"))
+                .WithCalendarIntervalSchedule(x => x
                     .SkipDayIfHourDoesNotExist(true)
                     .WithIntervalInDays(1))
-                .Build();                               
+                .Build();
 
-            await scheduler.ScheduleJob(job, trigger);
+            await scheduler.ScheduleJob(jobDetail, trigger);
         }
     }
 }

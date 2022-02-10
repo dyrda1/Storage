@@ -3,6 +3,7 @@ using BBL.BusinessModels;
 using BBL.DTO;
 using BBL.Services.Interfaces;
 using DAL;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,13 +21,11 @@ namespace BBL.Services.Classes
             _context = context;
         }
 
-        public async Task<Response<List<UserDTO>>> DeleteUser(UserDTO userDTO)
+        public async Task<Response<List<UserDTO>>> DeleteUser(string email)
         {
             var response = new Response<List<UserDTO>>();
 
-            var user = _context.Users.FirstOrDefault(x => x.Password == userDTO.Password && x.Email == userDTO.Email);
-
-            if (user == null)
+            if (!_context.Users.Any(x => x.Email == email))
             {
                 response.Message = "User with this password and email does not exist";
                 response.Success = false;
@@ -34,7 +33,7 @@ namespace BBL.Services.Classes
                 return response;
             }
 
-            var mark = _context.SkippeddDays.FirstOrDefault(x => x.User.Password == userDTO.Password && x.User.Email == userDTO.Email);
+            var mark = _context.SkippeddDays.FirstOrDefault(x => x.User.Email == email);
 
             if (mark.Amount < 5)
             {
@@ -44,10 +43,10 @@ namespace BBL.Services.Classes
                 return response;
             }
 
-            _context.Users.Remove(user);
+            _context.Users.Remove(mark.User);
             await _context.SaveChangesAsync();
 
-            response.Data = _mapper.Map<List<UserDTO>>(_context.Users.ToList());
+            response.Data = _mapper.Map<List<UserDTO>>(await _context.Users.ToListAsync());
 
             return response;
         }

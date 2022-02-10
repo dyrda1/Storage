@@ -11,7 +11,7 @@ namespace BBL
         {
             CreateMap<UserDTO, User>().ReverseMap();
 
-            CreateMap<RoleDTO, Role>().ReverseMap();
+            //CreateMap<RoleDTO, Role>().ReverseMap();
 
             CreateMap<ProductDTO, Product>().ReverseMap();
 

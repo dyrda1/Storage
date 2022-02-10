@@ -23,7 +23,7 @@ namespace Storage.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Response<List<CreateProductDTO>>>> Post(CreateProductDTO productDTO)
+        public async Task<ActionResult<Response<List<ProductDTO>>>> Post(CreateProductDTO productDTO)
         {
             return await _employerService.Create(productDTO);
         }

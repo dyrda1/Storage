@@ -21,17 +21,26 @@ namespace BBL.Services.Classes
             _context = context;
         }
 
-        public async Task<Response<List<CreateProductDTO>>> Create(CreateProductDTO productDTO)
+        public async Task<Response<List<ProductDTO>>> Create(CreateProductDTO productDTO)
         {
-            var product = _mapper.Map<Product>(productDTO);
+            var response = new Response<List<ProductDTO>>();
+
+            var product = _context.Products.Where(x => x.Name == productDTO.Name).SingleOrDefault();
+
+            if (product != null)
+            {
+                response.Message = "This product alredy exist";
+                response.Success = false;
+
+                return response;
+            }
+
+            product = _mapper.Map<Product>(productDTO);
 
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();
 
-            var response = new Response<List<CreateProductDTO>>()
-            {
-                Data = _mapper.Map<List<CreateProductDTO>>(_context.Products.ToList()),
-            };
+            response.Data = _mapper.Map<List<ProductDTO>>(_context.Products.ToList());
 
             return response;
         }
@@ -42,13 +51,17 @@ namespace BBL.Services.Classes
 
             var product = _context.Products.Where(x => x.Name == name).SingleOrDefault();
 
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
-
             if (product == null)
             {
                 response.Message = "This product does not exist";
+                response.Success = false;
+
+                return response;
             }
+
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
+
             response.Data = _mapper.Map<List<ProductDTO>>(_context.Products.ToList());
 
             return response;
@@ -56,15 +69,20 @@ namespace BBL.Services.Classes
 
         public async Task<Response<List<ProductDTO>>> Update(ProductDTO productDTO)
         {
-            var product = _mapper.Map<Product>(productDTO);
+            var response = new Response<List<ProductDTO>>();
 
-            _context.Products.Update(product);
+            if (!_context.Products.Any(x => x.Id == productDTO.Id))
+            {
+                response.Message = "This product does not exist";
+                response.Success = false;
+
+                return response;
+            }
+
+            _context.Products.Update(_mapper.Map<Product>(productDTO));
             await _context.SaveChangesAsync();
 
-            var response = new Response<List<ProductDTO>>()
-            {
-                Data = _mapper.Map<List<ProductDTO>>(_context.Products.ToList()),
-            };
+            response.Data = _mapper.Map<List<ProductDTO>>(_context.Products.ToList());
 
             return response;
         }

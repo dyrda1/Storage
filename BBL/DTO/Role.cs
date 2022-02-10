@@ -1,9 +1,9 @@
-﻿using System;
+﻿//using System;
 
-namespace BBL.DTO
-{
-    public class RoleDTO
-    {
-        public string Name { get; set; }
-    }
-}
+//namespace BBL.DTO
+//{
+//    public class RoleDTO
+//    {
+//        public string Name { get; set; }
+//    }
+//} TODO: hier
