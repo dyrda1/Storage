@@ -11,7 +11,7 @@ namespace Storage.Controllers
     [Authorize(Roles = "manager")]
     [ApiController]
     [Route("api/[controller]")]
-    public class ManagerСontoller:ControllerBase
+    public class ManagerСontoller : ControllerBase
     {
         private readonly IManagerService _managerService;
 

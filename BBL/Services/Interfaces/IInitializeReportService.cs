@@ -13,6 +13,6 @@ namespace BBL.Services.Interfaces
 
         Task<int> GetAmount(DateTime dateFrom, DateTime dateTo);
 
-        Task<decimal> GetSum(DateTime dateFrom, DateTime dateTo);    
+        Task<decimal> GetSum(DateTime dateFrom, DateTime dateTo);
     }
 }

@@ -1,6 +1,4 @@
-﻿using BBL.DTO;
-using DAL.Entities;
-using System.Security.Claims;
+﻿using DAL.Entities;
 
 namespace BBL.Services.Interfaces
 {

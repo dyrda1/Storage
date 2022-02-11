@@ -1,6 +1,7 @@
 ﻿using BBL.BusinessModels;
 using BBL.DTO;
 using BBL.Services.Interfaces;
+using BLL.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace Storage.Controllers
 
         [HttpGet]
         [Route("GetUsersSkippedDays")]
-        public async Task<ActionResult<Response<List<SkippedDaysDTO>>>> GetUsersSkippedDays()
+        public async Task<ActionResult<Response<List<GetSkippedDaysDTO>>>> GetUsersSkippedDays()
         {
             return await _adminService.GetUsersSkippedDays();
         }

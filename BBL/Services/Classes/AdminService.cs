@@ -2,6 +2,7 @@
 using BBL.BusinessModels;
 using BBL.DTO;
 using BBL.Services.Interfaces;
+using BLL.DTO;
 using DAL;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -49,11 +50,11 @@ namespace BBL.Services.Classes
             return response;
         }
 
-        public async Task<Response<List<SkippedDaysDTO>>> GetUsersSkippedDays()
+        public async Task<Response<List<GetSkippedDaysDTO>>> GetUsersSkippedDays()
         {
-            var response = new Response<List<SkippedDaysDTO>>()
+            var response = new Response<List<GetSkippedDaysDTO>>()
             {
-                Data = _mapper.Map<List<SkippedDaysDTO>>(await _context.SkippeddDays.ToListAsync())
+                Data = _mapper.Map<List<GetSkippedDaysDTO>>(await _context.SkippeddDays.ToListAsync())
             };
 
             return response;

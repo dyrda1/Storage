@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using BBL.BusinessModels;
+﻿using BBL.BusinessModels;
 using BBL.DTO;
 using BBL.Services.Interfaces;
 using DAL;
@@ -34,11 +33,11 @@ namespace BBL.Services.Classes
             }
 
             CreatePasswordHash(userDTO.Password, out byte[] passwordHash, out byte[] passwordSalt);
-            var user = new User() 
-            { 
-                Email = userDTO.Email, 
-                PasswordHash = passwordHash, 
-                PasswordSalt = passwordSalt 
+            var user = new User()
+            {
+                Email = userDTO.Email,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt
             };
 
             await _context.AddAsync(user);

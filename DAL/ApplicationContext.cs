@@ -17,7 +17,7 @@ namespace DAL
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
             //Database.EnsureCreated();
-            //Database.Migrate();
+            Database.Migrate();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -60,7 +60,7 @@ namespace DAL
         {
             builder.HasOne(d => d.User).
                 WithOne(u => u.SkippeddDays).
-                HasForeignKey<SkippedDays>(d=>d.UserId);
+                HasForeignKey<SkippedDays>(d => d.UserId);
         }
     }
 }

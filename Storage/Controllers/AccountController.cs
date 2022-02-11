@@ -1,11 +1,8 @@
 ﻿using BBL.BusinessModels;
 using BBL.DTO;
 using BBL.Services.Interfaces;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Storage.Controllers

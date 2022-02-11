@@ -1,5 +1,4 @@
-﻿using BBL.DTO;
-using BBL.Services.Interfaces;
+﻿using BBL.Services.Interfaces;
 using DAL.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -8,7 +7,6 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BBL.Services.Classes
 {

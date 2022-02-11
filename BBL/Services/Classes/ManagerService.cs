@@ -6,7 +6,6 @@ using DAL;
 using DAL.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BBL.Services.Classes
@@ -42,7 +41,7 @@ namespace BBL.Services.Classes
                 Sum = await _initialize.GetSum(dateFrom, dateTo),
                 Amount = await _initialize.GetAmount(dateFrom, dateTo),
             };
-                        
+
             await _context.Reports.AddAsync(report);
             await _context.SaveChangesAsync();
 

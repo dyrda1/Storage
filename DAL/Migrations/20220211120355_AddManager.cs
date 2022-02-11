@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DAL.Migrations
 {
-    public partial class AddDefaultRoleId : Migration
+    public partial class AddManager : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,9 +12,10 @@ namespace DAL.Migrations
                 table: "Users",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("3dc055a7-1ab9-4282-8c60-c7577ac97b55"),
+                defaultValue: new Guid("54b32948-10cd-4bb5-bbb9-f7b836c0a2a6"),
                 oldClrType: typeof(Guid),
-                oldType: "uniqueidentifier");
+                oldType: "uniqueidentifier",
+                oldDefaultValue: new Guid("3dc055a7-1ab9-4282-8c60-c7577ac97b55"));
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -24,9 +25,10 @@ namespace DAL.Migrations
                 table: "Users",
                 type: "uniqueidentifier",
                 nullable: false,
+                defaultValue: new Guid("3dc055a7-1ab9-4282-8c60-c7577ac97b55"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("3dc055a7-1ab9-4282-8c60-c7577ac97b55"));
+                oldDefaultValue: new Guid("54b32948-10cd-4bb5-bbb9-f7b836c0a2a6"));
         }
     }
 }

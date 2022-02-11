@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BBL.DTO;
+using BLL.DTO;
 using DAL.Entities;
-using System.Collections.Generic;
 
 namespace BBL
 {
@@ -11,7 +11,7 @@ namespace BBL
         {
             CreateMap<UserDTO, User>().ReverseMap();
 
-            //CreateMap<RoleDTO, Role>().ReverseMap();
+            CreateMap<GetSkippedDaysDTO, SkippedDays>().ReverseMap();
 
             CreateMap<ProductDTO, Product>().ReverseMap();
 
