@@ -1,10 +1,9 @@
-﻿using BBL.DTO;
-using System.Security.Claims;
+﻿using DAL.Entities;
 
 namespace BBL.Services.Interfaces
 {
     public interface IAuthenticateService
     {
-        ClaimsIdentity Authenticate(UserDTO userDTO);
+        string CreateToken(User user);
     }
 }

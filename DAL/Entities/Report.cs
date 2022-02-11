@@ -11,6 +11,5 @@ namespace DAL.Entities
         public int Amount { get; set; }
 
         public virtual List<Product> Products { get; set; }
-        public virtual List<ReportProducts> ReportProducts { get; set; }
     }
 }

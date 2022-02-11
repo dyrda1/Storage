@@ -10,13 +10,8 @@ namespace DAL.Entities
         public decimal Price { get; set; }
         public DateTime CreateDate { get; set; }
 
-        public Guid? BrandId { get; set; }
-        public virtual Brand Brand { get; set; }
-
         public virtual List<Order> Orders { get; set; }
-        public virtual List<OrderProducts> OrderProducts { get; set; }
 
-        public virtual List<Report> Report { get; set; }
-        public virtual List<ReportProducts> ReportProducts { get; set; }
+        public virtual List<Report> Reports { get; set; }
     }
 }

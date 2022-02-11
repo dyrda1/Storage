@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace BBL.Services.Interfaces
 {
-    public interface IManagerService
+    public interface IMarkService
     {
-        Task<Response<ReportDTO>> Create(DateTime dateFrom, DateTime dateTo);
+        public Task<Response<SkippedDaysDTO>> Mark(Guid id);
     }
 }

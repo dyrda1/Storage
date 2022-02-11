@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
+using BBL.BusinessModels;
 using BBL.DTO;
 using BBL.Services.Interfaces;
 using DAL;
 using DAL.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BBL.Services.Classes
@@ -23,23 +23,31 @@ namespace BBL.Services.Classes
             _initialize = initialize;
         }
 
-        public async Task<ReportDTO> Create(DateTime dateFrom, DateTime dateTo)
+        public async Task<Response<ReportDTO>> Create(DateTime dateFrom, DateTime dateTo)
         {
-            var report = new Report();
+            var response = new Response<ReportDTO>();
 
-            report.Time = _initialize.GetTime(dateFrom, dateTo);
-            report.Sum = _initialize.GetSum(dateFrom, dateTo);
-            report.Amount = _initialize.GetAmount(dateFrom, dateTo);
+            List<ProductDTO> products = await _initialize.GetProducts(dateFrom, dateTo);
 
-            var products = _initialize.GetProducts(dateFrom, dateTo);
-            report.Products = _mapper.Map<List<Product>>(products);
+            if (products.Count == 0)
+            {
+                response.Message = "No products have been sold during this time";
+                response.Success = false;
+                return response;
+            }
+            var report = new Report
+            {
+                Time = _initialize.GetTime(dateFrom, dateTo),
+                Sum = await _initialize.GetSum(dateFrom, dateTo),
+                Amount = await _initialize.GetAmount(dateFrom, dateTo),
+            };
 
             await _context.Reports.AddAsync(report);
             await _context.SaveChangesAsync();
 
-            report = _context.Reports.Last();
+            response.Data = _mapper.Map<ReportDTO>(report);
 
-            return _mapper.Map<ReportDTO>(report);
+            return response;
         }
     }
 }
