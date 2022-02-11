@@ -3,12 +3,15 @@ using BBL.DTO;
 using BBL.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Storage.Controllers
 {
-    //[Authorize(Roles = "employer")]
+    [Authorize(Roles = "employer")]
     [ApiController]
     [Route("api/[controller]")]
     public class EmployerСontoller : ControllerBase
@@ -42,9 +45,10 @@ namespace Storage.Controllers
 
         [HttpPut]
         [Route("Mark")]
-        public async Task<ActionResult<Response<SkippedDaysDTO>>> Put(UserDTO userDTO)
+        public async Task<ActionResult<Response<SkippedDaysDTO>>> Put()
         {
-            return await _markService.Mark(userDTO);
+            var id = Guid.Parse(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            return await _markService.Mark(id);
         }
     }
 }

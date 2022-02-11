@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Storage.Controllers
 {
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     [ApiController]
     [Route("api/[controller]")]
     public class AdminСontoller
@@ -22,16 +22,16 @@ namespace Storage.Controllers
 
         [HttpGet]
         [Route("GetReports")]
-        public ActionResult<Response<List<ReportDTO>>> GetReports()
+        public async Task<ActionResult<Response<List<ReportDTO>>>> GetReports()
         {
-            return _adminService.GetReports();
+            return await _adminService.GetReports();
         }
 
         [HttpGet]
         [Route("GetUsersSkippedDays")]
-        public ActionResult<Response<List<SkippedDaysDTO>>> GetUsersSkippedDays()
+        public async Task<ActionResult<Response<List<SkippedDaysDTO>>>> GetUsersSkippedDays()
         {
-            return _adminService.GetUsersSkippedDays();
+            return await _adminService.GetUsersSkippedDays();
         }
 
         [HttpDelete]

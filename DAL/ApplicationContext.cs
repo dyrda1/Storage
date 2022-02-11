@@ -1,6 +1,7 @@
 ﻿using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace DAL
 {
@@ -48,6 +49,8 @@ namespace DAL
             builder.HasOne(u => u.Role).
                 WithMany(r => r.Users).
                 HasForeignKey(u => u.RoleId);
+
+            builder.Property(x => x.RoleId).HasDefaultValue(new Guid("3dc055a7-1ab9-4282-8c60-c7577ac97b55"));
         }
     }
 

@@ -56,7 +56,6 @@ namespace BBL.Services.Classes
             {
                 response.Message = "This product does not exist";
                 response.Success = false;
-
                 return response;
             }
 
@@ -77,7 +76,6 @@ namespace BBL.Services.Classes
             {
                 response.Message = "This product does not exist";
                 response.Success = false;
-
                 return response;
             }
 

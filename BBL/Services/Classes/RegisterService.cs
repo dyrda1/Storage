@@ -1,52 +1,54 @@
-﻿//using AutoMapper;
-//using BBL.AuthorizationModels;
-//using BBL.BusinessModels;
-//using BBL.DTO;
-//using BBL.Services.Interfaces;
-//using DAL;
-//using DAL.Entities;
-//using Microsoft.EntityFrameworkCore;
-//using System.Security.Claims;
-//using System.Threading.Tasks;
+﻿using AutoMapper;
+using BBL.BusinessModels;
+using BBL.DTO;
+using BBL.Services.Interfaces;
+using BLL.Services.Interfaces;
+using DAL;
+using DAL.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading.Tasks;
 
-//namespace BBL.Services.Classes
-//{
-//    public class RegisterService : IRegisterService
-//    {
-//        private readonly IMapper _mapper;
-//        private readonly ApplicationContext _context;
-//        private readonly IAuthenticateService _authenticate;
+namespace BBL.Services.Classes
+{
+    public class RegisterService : IRegisterService
+    {
+        private readonly ApplicationContext _context;
+        //private readonly IAuthenticateService _authenticate;
+        private readonly IPasswordService _passwordHash;
 
-//        public RegisterService(ApplicationContext context, IAuthenticateService authenticate, IMapper mapper)
-//        {
-//            _mapper = mapper;
-//            _context = context;
-//            _authenticate = authenticate;
-//        }
+        public RegisterService(ApplicationContext context, /*IAuthenticateService authenticate,*/ IPasswordService passwordHash)
+        {
+            _context = context;
+            //_authenticate = authenticate;
+            _passwordHash = passwordHash;
+        }
 
-//        public async Task<Response<ClaimsIdentity>> Register(RegisterModel model)
-//        {
-//            var response = new Response<ClaimsIdentity>();
+        public async Task<Response<Guid>> Register(UserDTO userDTO)
+        {
+            var response = new Response<Guid>();
 
-//            User user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+            var exist = await _context.Users.AnyAsync(x => x.Email == userDTO.Email);
+            if (exist)
+            {
+                response.Message = "User alredy exists";
+                response.Success = false;
+                return response;
+            }
 
-//            if (user != null)
-//            {
-//                response.Message = "User with this Email already exists";
-//                response.Success = false;
+            _passwordHash.CreatePasswordHash(userDTO.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            var user = new User() 
+            { 
+                Email = userDTO.Email, 
+                PasswordHash = passwordHash, 
+                PasswordSalt = passwordSalt 
+            };
 
-//                return response;
-//            }
+            await _context.AddAsync(user);
+            await _context.SaveChangesAsync();
 
-//            user = new User { Email = model.Email, Password = model.Password };
-//            user.Role = await _context.Roles.FirstAsync(r => r.Name == "employer");
-
-//            _context.Users.Add(user);
-//            await _context.SaveChangesAsync();
-
-//            response.Data = _authenticate.Authenticate(_mapper.Map<UserDTO>(user));
-
-//            return response;
-//        }
-//    }
-//} TODO: hier?
+            response.Data = user.Id;
+            return response;
+        }
+    }
+}

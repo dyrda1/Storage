@@ -34,7 +34,6 @@ namespace BBL.Services.Classes
             {
                 response.Message = "No products have been sold during this time";
                 response.Success = false;
-
                 return response;
             }
             var report = new Report
@@ -47,7 +46,7 @@ namespace BBL.Services.Classes
             await _context.Reports.AddAsync(report);
             await _context.SaveChangesAsync();
 
-            response.Data = _mapper.Map<ReportDTO>(_context.Reports.OrderBy(x=>x).Last());
+            response.Data = _mapper.Map<ReportDTO>(report);
 
             return response;
         }

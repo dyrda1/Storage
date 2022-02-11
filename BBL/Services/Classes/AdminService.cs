@@ -27,9 +27,8 @@ namespace BBL.Services.Classes
 
             if (!_context.Users.Any(x => x.Email == email))
             {
-                response.Message = "User with this password and email does not exist";
+                response.Message = "User not exists";
                 response.Success = false;
-
                 return response;
             }
 
@@ -39,7 +38,6 @@ namespace BBL.Services.Classes
             {
                 response.Message = "User has less than 5 skipped days";
                 response.Success = false;
-
                 return response;
             }
 
@@ -51,21 +49,21 @@ namespace BBL.Services.Classes
             return response;
         }
 
-        public Response<List<SkippedDaysDTO>> GetUsersSkippedDays()
+        public async Task<Response<List<SkippedDaysDTO>>> GetUsersSkippedDays()
         {
             var response = new Response<List<SkippedDaysDTO>>()
             {
-                Data = _mapper.Map<List<SkippedDaysDTO>>(_context.SkippeddDays.ToList())
+                Data = _mapper.Map<List<SkippedDaysDTO>>(await _context.SkippeddDays.ToListAsync())
             };
 
             return response;
         }
 
-        public Response<List<ReportDTO>> GetReports()
+        public async Task<Response<List<ReportDTO>>> GetReports()
         {
             var response = new Response<List<ReportDTO>>()
             {
-                Data = _mapper.Map<List<ReportDTO>>(_context.Reports.ToList())
+                Data = _mapper.Map<List<ReportDTO>>(await _context.Reports.ToListAsync())
             };
 
             return response;

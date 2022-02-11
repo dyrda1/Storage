@@ -1,12 +1,12 @@
-﻿using BBL.AuthorizationModels;
-using BBL.BusinessModels;
-using System.Security.Claims;
+﻿using BBL.BusinessModels;
+using BBL.DTO;
+using System;
 using System.Threading.Tasks;
 
 namespace BBL.Services.Interfaces
 {
     public interface IRegisterService
     {
-        Task<Response<ClaimsIdentity>> Register(RegisterModel model);
+        Task<Response<Guid>> Register(UserDTO userDTO);
     }
 }

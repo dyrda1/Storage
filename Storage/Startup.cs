@@ -2,15 +2,21 @@ using BBL;
 using BBL.Services.Classes;
 using BBL.Services.Interfaces;
 using BBL.Ultils;
+using BLL.Services.Classes;
+using BLL.Services.Interfaces;
 using BLL.Ultils;
 using DAL;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
+using System.Text;
 
 namespace Storage
 {
@@ -30,6 +36,14 @@ namespace Storage
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Storage", Version = "v1" });
+                c.AddSecurityDefinition("auth1", new OpenApiSecurityScheme
+                {
+                    Description = "Standart Authorization header using the Bearer sckeme. Example: \" bearer {token}\"",
+                    In = ParameterLocation.Header,
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                c.OperationFilter<SecurityRequirementsOperationFilter>();
             });
 
             services.AddDbContext<ApplicationContext>(options =>
@@ -37,24 +51,32 @@ namespace Storage
                 options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
-            //{
-            //    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/api/Account/Login");
-            //    options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/api/Account/Login");
-            //});
+            services.AddAutoMapper(typeof(ApplicationContext), typeof(MappingProfile));
 
-            services.AddAutoMapper(typeof(ApplicationContext), typeof(MappingProfile)); 
+            services.AddScoped<IAuthenticateService, AuthenticateService>();
+            services.AddScoped<IRegisterService, RegisterService>();
+            services.AddScoped<ILoginService, LoginService>();
+            services.AddScoped<IPasswordService, PasswordService>();
 
-            //services.AddScoped<IAuthenticateService, AuthenticateService>();
             services.AddTransient<IInitializeReportService, InitializeReportService>();
             services.AddTransient<IEmployerService, EmployerService>();
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<IManagerService, ManagerService>();
+
             services.AddTransient<IMarkService, MarkService>();
             services.AddTransient<JobFactory>();
             services.AddScoped<MarksEmployees>();
-            //services.AddScoped<IRegisterService, RegisterService>();
-            //services.AddScoped<ILoginService, LoginService>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettins:Token").Value)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -72,7 +94,7 @@ namespace Storage
 
             app.UseAuthentication();
             app.UseAuthorization();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

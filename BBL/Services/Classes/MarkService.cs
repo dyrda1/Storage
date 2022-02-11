@@ -4,6 +4,7 @@ using BBL.DTO;
 using BBL.Services.Interfaces;
 using DAL;
 using DAL.Entities;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,25 +21,15 @@ namespace BBL.Services.Classes
             _mapper = mapper;
         }
 
-        public async Task<Response<SkippedDaysDTO>> Mark(UserDTO userDTO)
+        public async Task<Response<SkippedDaysDTO>> Mark(Guid id)
         {
             var response = new Response<SkippedDaysDTO>();
 
-            var user = _context.Users.FirstOrDefault(x => x.Password == userDTO.Password && x.Email == userDTO.Email);
-
-            if (user == null)
-            {
-                response.Message = "User with this password and email does not exist";
-                response.Success = false;
-
-                return response;
-            }
-
-            var mark = _context.SkippeddDays.FirstOrDefault(x => x.User.Password == userDTO.Password && x.User.Email == userDTO.Email);
+            var mark = _context.SkippeddDays.FirstOrDefault(x => x.Id == id);
 
             if (mark == null)
             {
-                mark = new SkippedDays() { UserId = user.Id, MarkedToday = true };
+                mark = new SkippedDays() { UserId = id, MarkedToday = true };
                 await _context.SkippeddDays.AddAsync(mark);
             }
 

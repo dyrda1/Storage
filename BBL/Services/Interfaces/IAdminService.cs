@@ -7,9 +7,9 @@ namespace BBL.Services.Interfaces
 {
     public interface IAdminService
     {
-        Response<List<ReportDTO>> GetReports();
+        Task<Response<List<ReportDTO>>> GetReports();
 
-        Response<List<SkippedDaysDTO>> GetUsersSkippedDays();
+        Task<Response<List<SkippedDaysDTO>>> GetUsersSkippedDays();
 
         Task<Response<List<UserDTO>>> DeleteUser(string email);
     }

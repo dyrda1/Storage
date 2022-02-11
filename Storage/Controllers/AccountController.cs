@@ -1,8 +1,10 @@
-﻿using BBL.AuthorizationModels;
+﻿using BBL.BusinessModels;
+using BBL.DTO;
 using BBL.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -23,28 +25,16 @@ namespace Storage.Controllers
 
         [HttpPost]
         [Route("Register")]
-        public async Task<IActionResult> Register(RegisterModel model)
+        public async Task<ActionResult<Response<Guid>>> Register(UserDTO userDTO)
         {
-            var response = await _registerService.Register(model);
-            if (response.Data != null)
-            {
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(response.Data));
-            }
-
-            return Content(response.Message);
+            return await _registerService.Register(userDTO);
         }
 
         [HttpPost]
         [Route("Login")]
-        public async Task<IActionResult> Login(LoginModel model)
+        public async Task<ActionResult<Response<string>>> Login(UserDTO userDTO)
         {
-            var response = await _loginService.Login(model);
-            if (response.Data != null)
-            {
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(response.Data));
-            }
-
-            return Content(response.Message);
+            return await _loginService.Login(userDTO);
         }
     }
 }
