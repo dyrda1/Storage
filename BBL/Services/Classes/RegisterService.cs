@@ -2,11 +2,12 @@
 using BBL.BusinessModels;
 using BBL.DTO;
 using BBL.Services.Interfaces;
-using BLL.Services.Interfaces;
 using DAL;
 using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace BBL.Services.Classes
@@ -14,14 +15,10 @@ namespace BBL.Services.Classes
     public class RegisterService : IRegisterService
     {
         private readonly ApplicationContext _context;
-        //private readonly IAuthenticateService _authenticate;
-        private readonly IPasswordService _passwordHash;
 
-        public RegisterService(ApplicationContext context, /*IAuthenticateService authenticate,*/ IPasswordService passwordHash)
+        public RegisterService(ApplicationContext context)
         {
             _context = context;
-            //_authenticate = authenticate;
-            _passwordHash = passwordHash;
         }
 
         public async Task<Response<Guid>> Register(UserDTO userDTO)
@@ -36,7 +33,7 @@ namespace BBL.Services.Classes
                 return response;
             }
 
-            _passwordHash.CreatePasswordHash(userDTO.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            CreatePasswordHash(userDTO.Password, out byte[] passwordHash, out byte[] passwordSalt);
             var user = new User() 
             { 
                 Email = userDTO.Email, 
@@ -49,6 +46,15 @@ namespace BBL.Services.Classes
 
             response.Data = user.Id;
             return response;
+        }
+
+        private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            using (var hmac = new HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+            }
         }
     }
 }

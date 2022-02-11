@@ -30,7 +30,7 @@ namespace BBL.Services.Classes
                 new Claim(ClaimTypes.Role, user.Role.Name)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettins:Token").Value));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
 
             var creads = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 

@@ -2,13 +2,12 @@
 using BBL.BusinessModels;
 using BBL.DTO;
 using BBL.Services.Interfaces;
-using BLL.Services.Classes;
-using BLL.Services.Interfaces;
 using DAL;
-using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace BBL.Services.Classes
@@ -17,13 +16,11 @@ namespace BBL.Services.Classes
     {
         private readonly ApplicationContext _context;
         private readonly IAuthenticateService _authenticate;
-        private readonly IPasswordService _passwordHash;
 
-        public LoginService(ApplicationContext context, IAuthenticateService authenticate, IPasswordService passwordHash)
+        public LoginService(ApplicationContext context, IAuthenticateService authenticate)
         {
             _context = context;
             _authenticate = authenticate;
-            _passwordHash = passwordHash;
         }
 
         public async Task<Response<string>> Login(UserDTO userDTO)
@@ -36,9 +33,9 @@ namespace BBL.Services.Classes
                 response.Message = "User not found";
                 response.Success = false;
             }
-            else if (!_passwordHash.VerifyPasswordHash(userDTO.Password, user.PasswordHash, user.PasswordSalt))
+            else if (!VerifyPasswordHash(userDTO.Password, user.PasswordHash, user.PasswordSalt))
             {
-                response.Message = "User not found";
+                response.Message = "Wrong password";
                 response.Success = false;
             }
             else
@@ -46,6 +43,22 @@ namespace BBL.Services.Classes
                 response.Data = _authenticate.CreateToken(user);
             }
             return response;
+        }
+
+        private static bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            using (var hmac = new HMACSHA512(passwordSalt))
+            {
+                var computerHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                for (int i = 0; i < computerHash.Length; i++)
+                {
+                    if (passwordHash[i] != computerHash[i])
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
         }
     }
 }

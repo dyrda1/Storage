@@ -23,17 +23,27 @@ namespace Storage.Controllers
             _registerService = registerService;
         }
 
-        [HttpPost]
-        [Route("Register")]
+        [HttpPost("Register")]
         public async Task<ActionResult<Response<Guid>>> Register(UserDTO userDTO)
         {
-            return await _registerService.Register(userDTO);
+            var response = await _registerService.Register(userDTO);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
         }
 
-        [HttpPost]
-        [Route("Login")]
+        [HttpPost("Login")]
         public async Task<ActionResult<Response<string>>> Login(UserDTO userDTO)
         {
+            var response = await _loginService.Login(userDTO);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
             return await _loginService.Login(userDTO);
         }
     }

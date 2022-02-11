@@ -2,8 +2,6 @@ using BBL;
 using BBL.Services.Classes;
 using BBL.Services.Interfaces;
 using BBL.Ultils;
-using BLL.Services.Classes;
-using BLL.Services.Interfaces;
 using BLL.Ultils;
 using DAL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -33,17 +31,28 @@ namespace Storage
         {
             services.AddControllers();
 
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Storage", Version = "v1" });
-                c.AddSecurityDefinition("auth1", new OpenApiSecurityScheme
+                options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
                 {
-                    Description = "Standart Authorization header using the Bearer sckeme. Example: \" bearer {token}\"",
-                    In = ParameterLocation.Header,
                     Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey
+                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme."
                 });
-                c.OperationFilter<SecurityRequirementsOperationFilter>();
+                options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement {
+                {
+                    new Microsoft.OpenApi.Models.OpenApiSecurityScheme {
+                    Reference = new Microsoft.OpenApi.Models.OpenApiReference {
+                        Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                    }
+                },
+                new string[] {}
+            }
+                });
             });
 
             services.AddDbContext<ApplicationContext>(options =>
@@ -56,7 +65,6 @@ namespace Storage
             services.AddScoped<IAuthenticateService, AuthenticateService>();
             services.AddScoped<IRegisterService, RegisterService>();
             services.AddScoped<ILoginService, LoginService>();
-            services.AddScoped<IPasswordService, PasswordService>();
 
             services.AddTransient<IInitializeReportService, InitializeReportService>();
             services.AddTransient<IEmployerService, EmployerService>();
@@ -72,7 +80,7 @@ namespace Storage
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettins:Token").Value)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
@@ -93,6 +101,7 @@ namespace Storage
             app.UseRouting();
 
             app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
